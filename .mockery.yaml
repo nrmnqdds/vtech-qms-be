@@ -1,0 +1,8 @@
+inpackage: True
+with-expecter: True
+# testonly: True
+all: True
+# packages:
+#   github.com/nrmnqdds/vtech-qms-be:
+#     config:
+#       recursive: True
