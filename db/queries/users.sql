@@ -10,12 +10,14 @@ INSERT INTO
     )
 VALUES
     (
-        (
-            SELECT
-                COALESCE(MAX(id), 0) + 1
-            FROM
-                Users
-        ),
+        -- autoincrement id starting from 1
+        -- (
+        --     SELECT
+        --         COALESCE(MAX(id), 0) + 1
+        --     FROM
+        --         Users
+        -- ),
+        @id,
         @username,
         @email,
         (

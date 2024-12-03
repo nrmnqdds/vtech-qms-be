@@ -5,23 +5,23 @@ SELECT
 
 -- User Management
 CREATE TABLE UserRoles (
-    id INT PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,
     role_name VARCHAR(50) UNIQUE NOT NULL,
     description TEXT
 );
 
 CREATE TABLE Users (
-    id INT PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    role_id INT NOT NULL,
+    role_id VARCHAR(20) NOT NULL,
     last_login TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (role_id) REFERENCES UserRoles(id)
 );
 
 CREATE TABLE UserPermissions (
-    role_id INT,
+    role_id VARCHAR(20),
     permission_code VARCHAR(100),
     PRIMARY KEY (role_id, permission_code),
     FOREIGN KEY (role_id) REFERENCES UserRoles(id)
@@ -29,11 +29,11 @@ CREATE TABLE UserPermissions (
 
 -- Document Control
 CREATE TABLE Documents (
-    id INT PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,
     document_type VARCHAR(100),
     title VARCHAR(255) NOT NULL,
     version VARCHAR(20) NOT NULL,
-    created_by INT,
+    created_by VARCHAR(20),
     created_date TIMESTAMP,
     last_reviewed_date TIMESTAMP,
     next_review_date TIMESTAMP,
@@ -43,10 +43,10 @@ CREATE TABLE Documents (
 );
 
 CREATE TABLE DocumentAuditTrail (
-    id INT PRIMARY KEY,
-    document_id INT,
+    id VARCHAR(20) PRIMARY KEY,
+    document_id VARCHAR(20),
     action_type VARCHAR(50),
-    action_by INT,
+    action_by VARCHAR(20),
     action_date TIMESTAMP,
     previous_version VARCHAR(20),
     FOREIGN KEY (document_id) REFERENCES Documents(id),
@@ -55,7 +55,7 @@ CREATE TABLE DocumentAuditTrail (
 
 -- Risk Management
 CREATE TABLE RiskRegister (
-    id INT PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,
     risk_name VARCHAR(255),
     description TEXT,
     risk_level VARCHAR(50),
@@ -64,7 +64,7 @@ CREATE TABLE RiskRegister (
     risk_score DECIMAL(5, 2),
     mitigation_strategy TEXT,
     current_status VARCHAR(100),
-    owner_id INT,
+    owner_id VARCHAR(20),
     FOREIGN KEY (owner_id) REFERENCES Users(id)
 );
 
@@ -90,7 +90,7 @@ CREATE TABLE DesignVerification (
     requirement_id INT,
     verification_method VARCHAR(100),
     verification_result VARCHAR(50),
-    verified_by INT,
+    verified_by VARCHAR(20),
     verification_date TIMESTAMP,
     FOREIGN KEY (requirement_id) REFERENCES DesignRequirements(id),
     FOREIGN KEY (verified_by) REFERENCES Users(id)
@@ -98,8 +98,8 @@ CREATE TABLE DesignVerification (
 
 -- Training Management
 CREATE TABLE TrainingRecords (
-    id INT PRIMARY KEY,
-    user_id INT,
+    id VARCHAR(20) PRIMARY KEY,
+    user_id VARCHAR(20),
     training_name VARCHAR(255),
     completion_date DATE,
     expiry_date DATE,
@@ -108,8 +108,8 @@ CREATE TABLE TrainingRecords (
 );
 
 CREATE TABLE TrainingMatrix (
-    role_id INT,
-    training_id INT,
+    role_id VARCHAR(20),
+    training_id VARCHAR(20),
     is_required BOOLEAN,
     PRIMARY KEY (role_id, training_id),
     FOREIGN KEY (role_id) REFERENCES UserRoles(id)
@@ -117,7 +117,7 @@ CREATE TABLE TrainingMatrix (
 
 -- Supplier Management
 CREATE TABLE Suppliers (
-    id INT PRIMARY KEY,
+    id VARCHAR(20) PRIMARY KEY,
     supplier_name VARCHAR(255),
     contact_person VARCHAR(100),
     email VARCHAR(255),
@@ -127,8 +127,8 @@ CREATE TABLE Suppliers (
 );
 
 CREATE TABLE SupplierPerformance (
-    id INT PRIMARY KEY,
-    supplier_id INT,
+    id VARCHAR(20) PRIMARY KEY,
+    supplier_id VARCHAR(20),
     evaluation_date DATE,
     overall_score DECIMAL(5, 2),
     quality_rating DECIMAL(5, 2),
@@ -142,7 +142,7 @@ CREATE TABLE Nonconformances (
     id INT PRIMARY KEY,
     description TEXT,
     detected_date DATE,
-    detected_by INT,
+    detected_by VARCHAR(20),
     product_id INT,
     severity VARCHAR(50),
     STATUS VARCHAR(50),
@@ -178,7 +178,7 @@ CREATE TABLE ComplaintInvestigation (
     complaint_id INT,
     root_cause TEXT,
     corrective_action TEXT,
-    investigator_id INT,
+    investigator_id VARCHAR(20),
     investigation_date DATE,
     FOREIGN KEY (complaint_id) REFERENCES Complaints(id),
     FOREIGN KEY (investigator_id) REFERENCES Users(id)
@@ -190,7 +190,7 @@ CREATE TABLE Audits (
     audit_type VARCHAR(100),
     scheduled_date DATE,
     actual_date DATE,
-    auditor_id INT,
+    auditor_id VARCHAR(20),
     STATUS VARCHAR(50),
     FOREIGN KEY (auditor_id) REFERENCES Users(id)
 );
@@ -219,7 +219,7 @@ CREATE TABLE AdverseEvents (
 -- Security and Audit Logging
 CREATE TABLE SystemAccessLog (
     id INT PRIMARY KEY,
-    user_id INT,
+    user_id VARCHAR(20),
     action_type VARCHAR(100),
     timestamp TIMESTAMP,
     ip_address VARCHAR(50),

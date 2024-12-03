@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/nrednav/cuid2"
 	"github.com/nrmnqdds/vtech-qms-be/db/store"
 )
 
@@ -31,9 +32,19 @@ func (h *UserHandlerImpl) CreateUser(c echo.Context) error {
 
 	logger := h.app.Logger.GetLogger()
 
+	var err error
+
+	generateCUID, err := cuid2.Init(
+		cuid2.WithLength(16),
+	)
+	if err != nil {
+		logger.Errorf("Failed to generate cuid: %v", err)
+	}
+
 	logger.Debugf("Creating user with request: %v", c.Request().Body)
 	e := new(store.CreateUserParams)
-	err := c.Bind(e)
+	e.ID = generateCUID()
+	err = c.Bind(e)
 	if err != nil {
 		logger.Errorf("Failed to bind request: %v", err)
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to bind request")

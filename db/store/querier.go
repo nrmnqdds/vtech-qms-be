@@ -9,7 +9,7 @@ import (
 )
 
 type Querier interface {
-	CreateUser(ctx context.Context, arg CreateUserParams) (int32, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (string, error)
 	GetAllUsers(ctx context.Context) ([]GetAllUsersRow, error)
 	SeedRoles(ctx context.Context) error
 }

@@ -23,21 +23,23 @@ INSERT INTO
     )
 VALUES
     (
-        (
-            SELECT
-                COALESCE(MAX(id), 0) + 1
-            FROM
-                Users
-        ),
+        -- autoincrement id starting from 1
+        -- (
+        --     SELECT
+        --         COALESCE(MAX(id), 0) + 1
+        --     FROM
+        --         Users
+        -- ),
         $1,
         $2,
+        $3,
         (
             SELECT
                 id
             FROM
                 UserRoles
             WHERE
-                role_name = $3
+                role_name = $4
         ),
         CURRENT_TIMESTAMP,
         TRUE
@@ -47,14 +49,20 @@ RETURNING
 `
 
 type CreateUserParams struct {
+	ID       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	Role     string `json:"role"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int32, error) {
-	row := q.db.QueryRow(ctx, createUser, arg.Username, arg.Email, arg.Role)
-	var id int32
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (string, error) {
+	row := q.db.QueryRow(ctx, createUser,
+		arg.ID,
+		arg.Username,
+		arg.Email,
+		arg.Role,
+	)
+	var id string
 	err := row.Scan(&id)
 	return id, err
 }
@@ -73,7 +81,7 @@ FROM
 `
 
 type GetAllUsersRow struct {
-	ID        int32            `json:"id"`
+	ID        string           `json:"id"`
 	Username  string           `json:"username"`
 	Email     string           `json:"email"`
 	Role      string           `json:"role"`
