@@ -16,7 +16,10 @@ func CheckAuthHeader(key string, _ echo.Context) (bool, error) {
 		return true, nil
 	}
 
-	_, err := internal.DecodeToken(key)
+	_, err := internal.DecodePasetoToken(key)
+  if err != nil {
+    return false, nil
+  }
 
 	return err == nil, nil
 }

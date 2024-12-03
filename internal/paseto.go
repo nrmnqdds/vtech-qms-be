@@ -7,9 +7,9 @@ import (
 	"aidanwoods.dev/go-paseto"
 )
 
-// GenerateToken generates a PASETO token for the given user ID
+// GeneratePasetoToken generates a PASETO token for the given user ID
 // and returns the token and public key
-func GenerateToken(userID string) (string, error) {
+func GeneratePasetoToken(userID string) (string, error) {
 	token := paseto.NewToken()
 
 	token.SetIssuedAt(time.Now())
@@ -29,8 +29,8 @@ func GenerateToken(userID string) (string, error) {
 	return signed, nil
 }
 
-// DecodeToken decodes the given PASETO token and returns the user ID
-func DecodeToken(token string) (string, error) {
+// DecodePasetoToken decodes the given PASETO token and returns the user ID
+func DecodePasetoToken(token string) (string, error) {
 	publicKey, err := paseto.NewV4AsymmetricPublicKeyFromHex(os.Getenv("PASETO_PUBLIC_KEY")) // this wil fail if given key in an invalid format
 	if err != nil {
 		return "", err
