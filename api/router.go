@@ -8,12 +8,15 @@ import (
 )
 
 func UserRouter(g *echo.Group, app *handler.App) {
-	g.GET("", app.GetAllUsers)
-	g.POST("/create", app.CreateUser)
+	userHandler := handler.NewUserHandler(app)
+
+	g.GET("", userHandler.GetAllUsers)
+	g.POST("/create", userHandler.CreateUser)
 }
 
 func RoleRouter(g *echo.Group, app *handler.App) {
-	g.POST("/seed", app.SeedRoles)
+	roleHandler := handler.NewRoleHandler(app)
+	g.POST("/seed", roleHandler.SeedRoles)
 }
 
 //	func RoutineRouter(g *echo.Group, app *handler.App) {
