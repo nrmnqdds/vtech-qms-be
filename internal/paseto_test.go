@@ -12,8 +12,10 @@ import (
 
 func TestMain(m *testing.M) {
 	// Setup: Set environment variables for testing
-	os.Setenv("PASETO_SECRET_KEY", "faf467491275e04532b6f2b8661b3c93e0896504fc54c129e99b8f10d70a9bf8be7f9772644f4bdb17d8da12d197882711b82f172a579aaff0782a1297f5e6a6")
-	os.Setenv("PASETO_PUBLIC_KEY", "be7f9772644f4bdb17d8da12d197882711b82f172a579aaff0782a1297f5e6a6")
+	generatedSecretKey := paseto.NewV4AsymmetricSecretKey()
+	generatedPublicKey := generatedSecretKey.Public()
+	os.Setenv("PASETO_SECRET_KEY", generatedSecretKey.ExportHex())
+	os.Setenv("PASETO_PUBLIC_KEY", generatedPublicKey.ExportHex())
 
 	// Run tests
 	code := m.Run()

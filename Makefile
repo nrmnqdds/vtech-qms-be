@@ -31,5 +31,5 @@ mock:
 # go install github.com/dkorunic/betteralign/cmd/betteralign@latest
 align:
 	@echo "Aligning field alignments..."
-	betteralign -apply ./...
+	betteralign -fix -test_files ./...
 
