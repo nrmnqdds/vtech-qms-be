@@ -8,14 +8,28 @@ goose-create:
 	@echo "Creating migration..."
 	@goose -dir db/migrations -s create $(NAME) sql
 
-goose/up:
+migrate:
 	@echo "Running migrations..."
 	@goose -dir db/migrations postgres $(DATABASE_URL) up
 
-goose/down:
+rollback:
 	@echo "Running rollback..."
 	@goose -dir db/migrations postgres $(DATABASE_URL) down
 
-sqlc/generate:
+gen:
 	@echo "Generating sqlc..."
 	@sqlc generate
+
+test:
+	@echo "Running tests..."
+	@go test -v -cover ./...
+
+mock:
+	@echo "Generating mocks..."
+	@mockery
+
+# go install github.com/dkorunic/betteralign/cmd/betteralign@latest
+align:
+	@echo "Aligning field alignments..."
+	betteralign -apply ./...
+
